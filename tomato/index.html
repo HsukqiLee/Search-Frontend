@@ -1,0 +1,161 @@
+
+<!DOCTYPE html>
+    <html lang="en"><head><meta name="bing-analysis-id" content="1k2r1d2p2z2s2p1i">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tomato</title>
+    <script src="js/flexibleMerge.js"></script>
+    <script src="js/global.js"></script>
+    <script src="js/crypto-js.min.js"></script>
+    <style>
+      .html,
+      .body,
+      .p {
+        padding: 0;
+        margin: 0;
+      }
+      .container {
+        min-height: 200px;
+        width: 100%;
+        min-width: 100px;
+        box-sizing: border-box;
+        padding: 0 0.5rem;
+        text-align: center;
+      }
+      #remain {
+        font-size: 2rem;
+      }
+      #mins {
+        display: block;
+        width: 80%;
+        margin: 0 auto;
+        height: 1.2rem;
+        box-sizing: border-box;
+        padding: 0.3rem 0.8rem;
+        border-radius: 1.2rem;
+        outline: none;
+        max-width: 8.5rem;
+        font-size: 0.5rem;
+      }
+      #start {
+        font-size: 1rem;
+        margin-top: 0.5rem;
+        cursor: pointer;
+      }
+
+      .html[theme="dark"],
+      .html[theme="dark"] body {
+        background-color: #191919;
+        color: #ffffff;
+      }
+      .html[theme="dark"] #mins {
+        background-color: unset;
+        border-color: #ffffff;
+        color: #ffffff;
+      }
+      .html[theme="dark"] #inner-bar {
+        background: rgba(255, 255, 255, 0.8);
+      }
+    </style>
+  </head>
+  <body>
+      
+    <div class="container" style="color:white">
+      <h1 id="remain"></h1>
+      <input maxlength="2" type="number" id="mins" placeholder="番茄时间（分钟）">
+      <div id="start">𝕊𝕥𝕒𝕣𝕥</div>
+    </div>
+  
+  <script>
+    const nums = ["𝟘", "𝟙", "𝟚", "𝟛", "𝟜", "𝟝", "𝟞", "𝟟", "𝟠", "𝟡"];
+    let remain = 25 * 60,
+      minsInterval;
+    const _start = "𝕊𝕥𝕒𝕣𝕥",
+      _pause = "𝕊𝕥𝕠𝕡";
+    let status = 0;
+
+    window.onload = function() {
+      const params = getAllParams(CryptoJS);
+      console.log(params)
+      document.body.style.color = params.font_color;
+      handleDarkMode(params);
+    }
+
+    document.getElementById("start").addEventListener("click", function () {
+      if (status === 1) {
+        // pause
+        return stopRemain();
+      }
+      status = 1;
+      clearInterval(minsInterval);
+      document.getElementById("start").innerHTML = _pause;
+      let mins = document.getElementById("mins").value;
+      if (mins) {
+        remain = mins * 60;
+      }
+      setRemain();
+      minsInterval = setInterval(setRemain, 1000);
+      document.getElementById("mins").value = null;
+    });
+
+    setRemain();
+
+    function setRemain() {
+      if (remain === 0) {
+        document.getElementById("remain").innerHTML = "✅";
+        stopRemain();
+        return;
+      }
+      let secs = remain % 60,
+        mins = parseInt(remain / 60);
+      document.getElementById("remain").innerHTML = `${getNum(mins)} : ${getNum(
+        secs
+      )}`;
+      remain--;
+    }
+
+    function stopRemain() {
+      status = 0;
+      clearInterval(minsInterval);
+      document.getElementById("start").innerHTML = _start;
+      document.getElementById("mins").value = null;
+      remain = 25 * 60;
+      setRemain();
+    }
+
+    function getNum(num) {
+      let num1, num2;
+      num1 = num % 10;
+      num2 = (num - num1) / 10;
+      return `${nums[num2]}${nums[num1]}`;
+    }
+  </script>
+ <script type="text/javascript">
+  window.onload = function(){
+    //屏蔽键盘事件
+  document.onkeydown = function (){
+        var e = window.event || arguments[0];
+            //F12
+           if(e.keyCode == 123){
+                 return false;
+              //Ctrl+Shift+I
+             }else if((e.ctrlKey) && (e.shiftKey) && (e.keyCode == 73)){
+                 return false;
+                //Shift+F10
+               }else if((e.shiftKey) && (e.keyCode == 121)){
+                    return false;
+               //Ctrl+U
+                 }else if((e.ctrlKey) && (e.keyCode == 85)){
+                    return false;
+                }
+             };
+             //屏蔽鼠标右键
+             document.oncontextmenu = function (){
+                return false;
+             }
+         }
+  
+  </script>
+</body>
+</html>
